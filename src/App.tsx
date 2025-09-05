@@ -4,6 +4,7 @@ import SplashTwo from "./components/VideoPreview";
 import VideoCall from "./components/VideoCall";
 import MeetMusic from "./assets/google_meet_ringtone.mp3";
 import avatarSrc from "./assets/AVATAR PNG.webp"
+import { Analytics } from "@vercel/analytics/react";
 
 type Step = "s1" | "s2" | "app";
 
@@ -40,6 +41,8 @@ export default function App() {
       )}
 
       <audio ref={audioRef} src={MeetMusic} preload="auto" />
+
+      <Analytics />
     </>
   );
 }
