@@ -55,7 +55,6 @@ export default function VideoCall({
           playsInline
           loop
           autoPlay
-          controls
           src={videoFile}
         />
       </div>
