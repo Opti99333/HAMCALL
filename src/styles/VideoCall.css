@@ -198,3 +198,27 @@
   .hamcall-overlay { left: 1200px; }
   .ca-overlay      { right: 1200px; }
 }
+
+/* --- Фикс для iPhone 15/16 Pro (узкие экраны) --- */
+@media (max-width: 430px) {
+  /* уменьшаем кнопки */
+  .circle {
+    width: 55px;
+    height: 55px;
+  }
+  .pill {
+    height: 60px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+  .badge {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  /* правый верхний блок CA чуть левее */
+  .ca-overlay {
+    right: 12px; /* вместо clamp большого значения */
+  }
+}
