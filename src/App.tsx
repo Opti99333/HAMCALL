@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import SplashOne from "./components/SplashScreen";
 import SplashTwo from "./components/VideoPreview";
-import VideoPreview from "./components/VideoPreview";
 import VideoCall from "./components/VideoCall";
 import MeetMusic from "./assets/google_meet_ringtone.mp3";
 import avatarSrc from "./assets/AVATAR PNG.webp"
