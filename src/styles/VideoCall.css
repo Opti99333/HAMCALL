@@ -31,3 +31,170 @@
   display: block;
   margin: 0 auto;   /* центрирование внутри кнопки */
 }
+
+/* уже есть, но оставляю для контекста */
+.video-stage {
+  position: relative;            /* нужно для абсолютного позиционирования оверлея */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Новый двухстрочный оверлей */
+.hamcall-overlay {
+  position: absolute;
+  top: 50%;                       /* центр по вертикали */
+  left: clamp(140px, 12vw, 200px);   /* отступ слева от видео */
+  transform: translateY(-50%);    /* чтобы текст был выровнен по центру */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: clamp(6px, 1.2vh, 10px) clamp(8px, 1.6vw, 20px);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  color: #fff;
+  pointer-events: none;
+  line-height: 1.1;
+}
+
+
+.hamcall-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: clamp(16px, 2.6vw, 24px);
+}
+
+.hamcall-subtitle {
+  opacity: 0.9;
+  font-weight: 600;
+  font-size: clamp(11px, 2vw, 16px);
+}
+
+/* УБРАТЬ старый стиль, если он был */
+.hamcall-label { display: none; }
+
+
+/* Правый оверлей */
+.ca-overlay {
+  position: absolute;
+  top: 50%;
+  right: clamp(140px, 12vw, 200px);   /* ← расстояние от правого края «чёрного поля» */
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;              /* выравнивание к правому краю */
+  gap: 6px;
+
+  padding: clamp(6px, 1.2vh, 10px) clamp(8px, 1.6vw, 20px);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  color: #fff;
+
+  /* чтобы кнопка кликалась, а фон не перехватывал события */
+  pointer-events: none;
+}
+
+.ca-overlay > * { pointer-events: auto;}
+
+.ca-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: clamp(14px, 2.2vw, 20px);
+  opacity: 0.95;
+}
+
+.ca-value {
+  max-width: min(34ch, 26vw);         /* перенос длинной строки */
+  word-break: break-all;
+  font-weight: 700;
+  font-size: clamp(12px, 2vw, 16px);
+  opacity: 0.95;
+}
+
+/* кнопка под строкой CA */
+.ca-btn {
+  margin-top: 4px;
+  height: clamp(36px, 6.8vh, 52px);   /* чуть компактнее стандартной pill */
+  padding: 0 clamp(14px, 1.4vw, 22px);
+}
+
+/* --- Адаптив под оверлеи (левый и правый) --- */
+.hamcall-overlay,
+.ca-overlay {
+  z-index: 2; /* поверх видео */
+}
+
+/* 1) Ноутбуки/планшеты — немного ближе к видео, чтобы не улетали к самому краю */
+@media (max-width: 1200px) {
+  .hamcall-overlay { left: clamp(24px, 6vw, 140px); }
+  .ca-overlay      { right: clamp(24px, 6vw, 140px); }
+}
+
+/* 2) Узкие экраны (≤ 768px): уменьшаем внутренние отступы и ширину строки CA */
+@media (max-width: 768px) {
+  .hamcall-overlay,
+  .ca-overlay {
+    padding: clamp(4px, 1vh, 8px) clamp(8px, 2vw, 14px);
+  }
+  .ca-value {
+    max-width: min(28ch, 70vw);
+    text-align: center;
+  }
+}
+
+/* 3) Очень низкие экраны или ландшафт на телефоне — уводим оверлеи вверх,
+      чтобы они не пересекались с нижней панелью */
+@media (max-height: 580px) {
+  .hamcall-overlay,
+  .ca-overlay {
+    top: 14px;
+    transform: none;         /* больше не выравниваем по центру вертикали */
+  }
+}
+
+/* 4) Телефоны (≤ 480px): прижимаем к углам и ещё ужимаем контент */
+@media (max-width: 480px) {
+  .hamcall-overlay {
+    top: 12px;
+    left: 12px;
+    transform: none;
+  }
+  .ca-overlay {
+    top: 12px;
+    right: 12px;
+    transform: none;
+  }
+  .ca-value {
+    max-width: 78vw;          /* почти вся ширина, но с полями */
+    font-size: clamp(11px, 3.5vw, 14px);
+  }
+  .badge, .ca-btn {
+    height: clamp(32px, 6vh, 44px);
+    padding: 0 clamp(10px, 3vw, 16px);
+  }
+}
+
+/* 5) Очень большие экраны (≥ 1600px): немного отталкиваем от краёв,
+      чтобы визуально попадало в боковые «поля» */
+@media (min-width: 1600px) {
+  .hamcall-overlay { left: clamp(80px, 8vw, 220px); }
+  .ca-overlay      { right: clamp(80px, 8vw, 220px); }
+}
+
+/* --- Адаптив для 2K и 4K экранов --- */
+
+/* 2K (≈2560px ширина экрана) */
+@media (min-width: 2560px) {
+  .hamcall-overlay { left: 550px; }   /* увеличенный отступ слева */
+  .ca-overlay      { right: 550px; }  /* увеличенный отступ справа */
+}
+
+/* 4K (≈3840px ширина экрана) */
+@media (min-width: 3840px) {
+  .hamcall-overlay { left: 1200px; }
+  .ca-overlay      { right: 1200px; }
+}
