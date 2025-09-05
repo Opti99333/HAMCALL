@@ -80,7 +80,7 @@
 .ca-overlay {
   position: absolute;
   top: 50%;
-  right: clamp(140px, 12vw, 200px);   /* ← расстояние от правого края «чёрного поля» */
+  right: clamp(140px, 12vw, 120px);   /* ← расстояние от правого края «чёрного поля» */
   transform: translateY(-50%);
 
   display: flex;
@@ -220,5 +220,40 @@
   /* правый верхний блок CA чуть левее */
   .ca-overlay {
     right: 12px; /* вместо clamp большого значения */
+  }
+}
+
+
+/* --- мобильные телефоны: меньше текст и без серого фона --- */
+@media (max-width: 600px) {
+  .hamcall-overlay,
+  .ca-overlay {
+    background: transparent !important;   /* убираем серый фон */
+    backdrop-filter: none !important;
+    padding: 2px 4px;                     /* компактнее */
+  }
+
+  .hamcall-title {
+    font-size: 12px !important;
+  }
+  .hamcall-subtitle {
+    font-size: 10px !important;
+  }
+
+  .ca-label {
+    font-size: 11px !important;
+  }
+  .ca-hash {
+    font-size: 11px !important;
+    max-width: 70vw;                      /* ограничение ширины */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .badge {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
   }
 }
