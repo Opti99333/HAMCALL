@@ -20,29 +20,6 @@
   pointer-events: none; /* чтобы не мешала кликам по видео */
 }
 
-/* Телефоны */
-@media (max-width: 768px) {
-  :root {
-    --circle: 44px;   /* кнопка-кружок чуть меньше */
-    --pill-h: 44px;   /* вытянутая кнопка BUY */
-    --badge: 38px;    /* бейдж CA */
-    --gap: 10px;      /* расстояние между кнопками */
-    --controls-h: 60px; /* сама панель управления чуть ниже */
-  }
-}
-
-.circle img,
-.circle svg {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Можно для опасной кнопки чуть меньше */
-.circle.danger img,
-.circle.danger svg {
-  max-width: 100%;
-  max-height: 100%;
+.time{
+  padding-right: 0.5em;
 }
