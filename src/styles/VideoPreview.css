@@ -1,0 +1,250 @@
+:root {
+  /* синхронизация с таймером fade-out в компоненте (~600ms) */
+  --fade-duration: 600ms;
+
+  /* Аватар */
+  --avatar-min: 72px;
+  --avatar-ideal: 18vw;   /* растёт от ширины экрана */
+  --avatar-max: 120px;
+
+  /* Имя */
+  --name-font-min: 14px;
+  --name-font-ideal: 3.2vw;
+  --name-font-max: 18px;
+
+  /* Сабтайтлы */
+  --sub-font-min: 12px;
+  --sub-font-ideal: 2.6vw;
+  --sub-font-max: 14px;
+
+  /* Нижний титул */
+  --calling-font-min: 12px;
+  --calling-font-ideal: 2.8vw;
+  --calling-font-max: 14px;
+
+  /* Кнопка */
+  --btn-min: 64px;
+  --btn-ideal: 18vw;
+  --btn-max: 92px;
+
+  /* Вертикальные отступы */
+  --pt-top: 56px;
+  --pb-bottom: 56px;
+}
+
+/* фон во весь экран */
+.preview-screen {
+  position: fixed;
+  inset: 0;
+  background: #3a3d40;
+  display: grid;
+  grid-template-rows: 1fr auto;  /* верхний блок растягивается, низ фикс */
+  justify-items: center;
+  align-items: start;
+
+  /* safe-area вырезы */
+  padding-top: calc(var(--pt-top) + env(safe-area-inset-top));
+  padding-left:  env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: calc(var(--pb-bottom) + env(safe-area-inset-bottom));
+
+  transition: opacity var(--fade-duration) ease;
+  z-index: 9999;
+}
+
+/* плавный уход */
+.preview-screen.fade-out { opacity: 0; }
+
+/* верх: аватар + имя + сабтайтл */
+.preview-top { 
+  text-align: center; 
+  display: grid;
+  justify-items: center;
+  gap: clamp(6px, 1.8vw, 12px);
+}
+
+.avatar {
+  width: clamp(var(--avatar-min), var(--avatar-ideal), var(--avatar-max));
+  height: clamp(var(--avatar-min), var(--avatar-ideal), var(--avatar-max));
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.06);
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: clamp(var(--name-font-min), var(--name-font-ideal), var(--name-font-max));
+}
+
+.subtitle {
+  color: #c9c9c9;
+  font-size: clamp(var(--sub-font-min), var(--sub-font-ideal), var(--sub-font-max));
+}
+
+/* низ: подзаголовок и круглая кнопка */
+.preview-bottom {
+  align-self: end;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: clamp(10px, 2vw, 16px);
+}
+
+.calling {
+  color: #c9c9c9;
+  font-size: clamp(var(--calling-font-min), var(--calling-font-ideal), var(--calling-font-max));
+  letter-spacing: .06em;
+  text-align: center;
+  padding: 0 12px; /* на всякий случай против переноса */
+}
+
+.call-btn {
+  width: clamp(var(--btn-min), var(--btn-ideal), var(--btn-max));
+  height: clamp(var(--btn-min), var(--btn-ideal), var(--btn-max));
+  border-radius: 9999px;
+  background: #9ec3ff;        /* светло-голубой */
+  color: #1b2a4a;             /* тёмный для иконки */
+  border: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0,0,0,.25);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+/* лёгкий «пульс», как индикатор входящего */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.call-btn { animation: pulse 1.6s infinite; }
+
+.call-btn:hover { transform: scale(1.06); }
+.call-btn:active { transform: scale(0.98); }
+
+/* --- Адаптив --- */
+
+/* Очень узкие телефоны */
+@media (max-width: 360px) {
+  :root {
+    --avatar-min: 64px;
+    --name-font-min: 13px;
+    --sub-font-min: 11px;
+    --calling-font-min: 11px;
+    --btn-min: 58px;
+    --pt-top: 40px;
+    --pb-bottom: 40px;
+  }
+  .calling { padding: 0 8px; }
+}
+
+/* Низкие экраны в портретной ориентации */
+@media (max-height: 600px) and (orientation: portrait) {
+  :root {
+    --avatar-max: 100px;
+    --btn-max: 80px;
+    --pt-top: 36px;
+    --pb-bottom: 36px;
+  }
+}
+
+/* Ландшафтные телефоны: делаем компактнее по высоте */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root {
+    --avatar-min: 56px;
+    --avatar-max: 88px;
+    --btn-min: 56px;
+    --btn-max: 80px;
+    --pt-top: 24px;
+    --pb-bottom: 24px;
+  }
+  .subtitle, .calling { letter-spacing: .04em; }
+}
+
+/* Планшеты */
+@media (min-width: 768px) and (min-height: 600px) {
+  :root {
+    --avatar-max: 128px;
+    --btn-max: 100px;
+  }
+}
+
+/* Десктопы / Full HD — слегка компактнее, чтобы не выглядело огромным */
+@media (min-width: 1920px) {
+  :root {
+    --avatar-max: 112px;
+    --avatar-ideal: 14vw;
+    --name-font-max: 17px;
+    --sub-font-max: 13px;
+    --calling-font-max: 13px;
+    --btn-max: 88px;
+    --btn-ideal: 14vw;
+  }
+}
+
+/* Очень большие экраны (например, 4K) */
+@media (min-width: 2560px) {
+  :root {
+    --avatar-max: 120px;  /* удерживаем в разумном пределе */
+    --btn-max: 92px;
+  }
+}
+
+/* Поддержка пользователей, отключивших анимации */
+@media (prefers-reduced-motion: reduce) {
+  .preview-screen { transition: none !important; }
+  .call-btn { animation: none !important; }
+}
+
+/* Очень узкие телефоны (≤ 360px) */
+@media (max-width: 360px) {
+  :root {
+    --avatar-min: 80px;       /* ↑ было 64px */
+    --btn-min: 70px;          /* ↑ было 58px */
+    --name-font-min: 14px;
+    --sub-font-min: 12px;
+    --calling-font-min: 12px;
+    --pt-top: 40px;
+    --pb-bottom: 40px;
+  }
+}
+
+/* Обычные телефоны (до 480px ширины) */
+@media (max-width: 480px) {
+  :root {
+    --avatar-min: 88px;       /* ↑ увеличиваем базовый размер */
+    --btn-min: 76px;
+    --btn-max: 92px;
+  }
+}
+
+/* Десктопы / Full HD */
+@media (min-width: 1920px) {
+  :root {
+    --avatar-max: 140px;      /* ↑ было 112px */
+    --avatar-ideal: 18vw;     /* ↑ было 14vw */
+    --btn-max: 120px;         /* ↑ было 88px */
+    --btn-ideal: 18vw;
+    --name-font-max: 20px;
+    --sub-font-max: 16px;
+    --calling-font-max: 16px;
+  }
+}
+
+/* Очень большие экраны (например, 4K) */
+@media (min-width: 2560px) {
+  :root {
+    --avatar-max: 180px;      /* ↑ было 120px */
+    --btn-max: 160px;         /* ↑ было 92px */
+    --avatar-ideal: 20vw;
+    --btn-ideal: 20vw;
+    --name-font-max: 24px;
+    --sub-font-max: 18px;
+    --calling-font-max: 18px;
+  }
+}

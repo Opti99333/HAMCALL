@@ -1,0 +1,184 @@
+
+.call-root {
+  position: fixed;
+  inset: 0;
+  background: #2e3135;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  font-family: "Segoe UI", sans-serif;
+}
+
+
+.video-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1f2226;
+  overflow: hidden;
+}
+
+
+.remote-video {
+  max-width: min(100vw, 960px);
+  max-height: calc(100vh - 120px);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+
+.call-controls {
+  background: #5a5d61;
+  height: 96px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
+}
+
+
+.call-controls .time {
+  color: #ffffff;
+  opacity: 0.9;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 18px;
+  justify-self: start;
+}
+
+
+.buttons {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: #3a3f45;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease;
+}
+.circle:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+.circle:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
+.circle.danger {
+  background: #e64c3c;
+}
+
+
+.pill {
+  height: 64px;
+  padding: 0 26px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease;
+  background: #45c046;
+  color: #ebffef;
+}
+.pill:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+.pill:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
+
+/* Badge (CA) */
+.badge {
+  position: relative;
+  justify-self: end;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: #8f9398;
+  color: #1c2634;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  user-select: none;
+}
+.badge:hover,
+.badge:focus-visible {
+  background: #a5a9ae;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 70px;
+  right: 50%;
+  transform: translateX(50%);
+  background: #1f2226;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.badge::before {
+  content: "";
+  position: absolute;
+  bottom: 56px;
+  right: 50%;
+  transform: translateX(50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1f2226 transparent transparent transparent;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.badge:hover::after,
+.badge:hover::before,
+.badge:focus-visible::after,
+.badge:focus-visible::before {
+  opacity: 1;
+  transform: translateX(50%) translateY(-2px);
+}
+
+.badge.copied::after {
+  content: "Copied!";
+  background: #2fbf71;
+}
+.badge.copied::before {
+  border-color: #2fbf71 transparent transparent transparent;
+}
+
+
+/* Анимация исчезновения только кнопки */
+.circle.fade-out {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}

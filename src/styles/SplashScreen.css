@@ -1,0 +1,203 @@
+:root {
+  /* Длительность исчезновения. Должна совпадать с таймером в TSX (600ms). */
+  --fade-duration: 600ms;
+
+  /* Базовые размеры, которые дальше адаптируем. */
+  --logo-min: 120px;      /* минимальная ширина логотипа */
+  --logo-ideal: 12vw;     /* идеальная ширина логотипа от ширины окна */
+  --logo-max: 420px;      /* максимальная ширина логотипа */
+
+  --brand-font-min: 18px;
+  --brand-font-ideal: 4vw;
+  --brand-font-max: 36px;
+}
+
+/* Корневой слой splash */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+
+  transition: opacity var(--fade-duration) ease;
+  will-change: opacity;
+}
+
+/* Плавное исчезновение экрана */
+.splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Обёртка логотипа — кликабельная кнопка */
+/* Обёртка логотипа — кликабельная кнопка */
+.logo-wrapper {
+  display: grid;
+  justify-items: center;
+  gap: clamp(8px, 2vw, 16px);
+  padding: clamp(8px, 2vw, 16px) clamp(12px, 3vw, 24px);
+
+  border-radius: 24px;
+
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+
+  transform: translateZ(0);
+  transition: transform 220ms ease, filter 220ms ease;
+  
+  /* Добавляем бесконечную лёгкую анимацию качания */
+  animation: wiggle 4s infinite ease-in-out;
+}
+
+.logo-wrapper:hover,
+.logo-wrapper:focus-visible {
+  transform: translateY(-2px) scale(1.02) rotate(3deg);
+  filter: brightness(1.05);
+}
+
+/* Логотип (пульсация остаётся) */
+.google-meet-logo {
+  width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  animation: pumping 4s infinite;
+}
+
+/* Ключевые кадры пульсации */
+@keyframes pumping {
+  0%   { transform: scale(1.0); }
+  25%  { transform: scale(1.06); }
+  50%  { transform: scale(1.12); }
+  75%  { transform: scale(1.06); }
+  100% { transform: scale(1.0); }
+}
+
+/* Ключевые кадры покачивания кнопки */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20%      { transform: rotate(2deg); }
+  40%      { transform: rotate(-2deg); }
+  60%      { transform: rotate(1.5deg); }
+  80%      { transform: rotate(-1.5deg); }
+}
+
+.logo-wrapper:hover,
+.logo-wrapper:focus-visible {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.05);
+}
+
+/* Логотип — масштаб через clamp: растёт на больших экранах, не ломает мобилы */
+.google-meet-logo {
+  width: clamp(var(--logo-min), var(--logo-ideal), var(--logo-max));
+  height: auto;
+  aspect-ratio: 1 / 1; /* страхуемся если картинка квадратная */
+  object-fit: contain;
+
+  /* Пульсация с мягкой анимацией */
+  animation: pumping 4s infinite;
+}
+
+/* Текст бренда — адаптивный размер */
+.brand {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  font-size: clamp(var(--brand-font-min), var(--brand-font-ideal), var(--brand-font-max));
+}
+
+/* Ключевые кадры пульса */
+@keyframes pumping {
+  0%   { transform: scale(1.0); }
+  25%  { transform: scale(1.06); }
+  50%  { transform: scale(1.12); }
+  75%  { transform: scale(1.06); }
+  100% { transform: scale(1.0); }
+}
+
+/* --- Адаптивные доработки --- */
+
+/* Очень узкие телефоны (≤ 360px) */
+@media (max-width: 360px) {
+  :root {
+    --logo-min: 96px;
+    --brand-font-min: 16px;
+  }
+  .logo-wrapper {
+    padding: 8px 12px;
+    border-radius: 18px;
+    gap: 8px;
+  }
+}
+
+/* Узкие экраны (≤ 480px) — уменьшаем пульсацию и тени */
+@media (max-width: 480px) {
+  .logo-wrapper {
+    backdrop-filter: blur(4px);
+  }
+  .brand {
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Высокие, но узкие (обычно вертикальные смартфоны) */
+@media (max-height: 600px) and (max-width: 480px) {
+  .google-meet-logo {
+    width: clamp(96px, 28vw, 220px);
+  }
+}
+
+/* Ландшафт на телефонах: делаем элементы компактнее */
+@media (orientation: landscape) and (max-height: 500px) {
+  .logo-wrapper {
+    padding: 6px 12px;
+    gap: 6px;
+    border-radius: 16px;
+  }
+  .google-meet-logo {
+    width: clamp(90px, 22vh, 220px);
+  }
+  .brand {
+    font-size: clamp(14px, 3.5vh, 24px);
+  }
+}
+
+/* Планшеты */
+@media (min-width: 768px) and (min-height: 600px) {
+  .logo-wrapper {
+    border-radius: 28px;
+  }
+}
+
+/* Десктопы/широкие экраны */
+@media (min-width: 1280px) {
+  .logo-wrapper {
+    border-radius: 32px;
+  }
+}
+
+/* Уважение системных настроек по анимациям */
+@media (prefers-reduced-motion: reduce) {
+  .splash-screen,
+  .logo-wrapper {
+    transition: none !important;
+  }
+  .google-meet-logo {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
