@@ -3,15 +3,15 @@ import "../styles/VideoPreview.css";
 
 type Props = {
   avatarSrc: string;
-  displayName?: string;      // по умолчанию HAMSTER
-  titleBelowButton?: string; // по умолчанию HAMSTER CALLING
+  displayName?: string;     
+  titleBelowButton?: string; 
   onDone: () => void;
 };
 
 export default function SplashPreview({
   avatarSrc,
-  displayName = "HAMSTER",
-  titleBelowButton = "HAMSTER CALLING",
+  displayName = "BOSS",
+  titleBelowButton = "BOSS CALLING",
   onDone,
 }: Props) {
   const [leaving, setLeaving] = useState(false);
